@@ -106,3 +106,25 @@ sudo ss -tulpn | grep -E '80'
 ![nginx listening port](https://github.com/sn1MAk/https-web-server-lab/blob/9ad313e14969d266e41244aa3689c4ff0d5a2827/screenshots/02-nginx-listening-port.png)
 
 Перевірили, що **Nginx** прослуховує порт `80`.
+
+
+### 3.2.Створення веб-сторінки
+
+Файли сайту розміщуються в стандартній теці Nginx:
+```bash
+/var/www/html/
+```
+
+Основним файлом сайту є:
+```bash 
+/var/www/html/index.html
+```
+Саме цей файл повертається Nginx-ом на запит клієнта.
+
+Після налаштування HTTP роботу сервера перевірено через 
+```bash 
+http://localhost
+```
+У результаті веб-сторінка успішно відкрилася та успішно працювала через HTTP протокол та `80` порті*(стандартному для http)*.
+
+[!web site](https://github.com/sn1MAk/https-web-server-lab/blob/6926d93315307b962fef155586572f6d8e436d21/screenshots/03-web-site.png)
