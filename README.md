@@ -78,6 +78,7 @@ Nginx
 ```
 > [!warning]
 > `server.key` — приватний ключ сервера. Він повинен зберігатися в секреті, тому у репозиторій не буде доданий.
+
 `server.crt` — X.509-сертифікат, який містить відкритий ключ та інформацію про суб'єкта сертифіката, термін його дії та криптографічний підпис.
 
 У роботі використовується *самопідписаний сертифікат(self-signed)*, тому браузер не довіряє та викидає червону табличку.
@@ -94,5 +95,6 @@ sudo apt update & sudo apt install nginx -y
 ```bash
 sudo systemctl status nginx
 ```
+![sudo systemctl status nginx](https://github.com/sn1MAk/https-web-server-lab/blob/fa597aa3227ba3c41f43c4ed90970b0aef25c71c/screenshots/01-nginx-status.png)
 
-Після встановлення **Nginx** почав прослуховувати HTTP-порт `80`.
+Після встановлення **Nginx** став активним.
