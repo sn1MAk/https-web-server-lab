@@ -281,3 +281,29 @@ netsh interface portproxy show all
 ```
 
 ![netsh port](https://github.com/sn1MAk/https-web-server-lab/blob/fdfb9e3e96d378869087b002844af9794523c098/screenshots/06-netsh-port.png)
+
+# 11.Налаштування Windows Firewall
+
+Для дозволу входу HTTP було створено правило:
+```powershell
+New-NetFirewallRule `
+-DisplayName "WSL Nginx HTTP Lab" `
+-Direction Inbound `
+-Protocol TCP `
+-LocalPort 80 `
+-Action Allow
+```
+Для HTTPS:
+```powershell
+New-NetFirewallRule `
+-DisplayName "WSL Nginx HTTPS Lab" `
+-Direction Inbound `
+-Protocol TCP `
+-LocalPort 443 `
+-Action Allow
+```
+ 
+Після цього веб-сайт став доступним з інших пристроїв підлючених до тієї самої мережі Wi-Fi/vpn:
+
+![mobile test](https://github.com/sn1MAk/https-web-server-lab/blob/d4c1c408c678c15e9b060ec8bd73151daf341482/screenshots/07-mobile-test.png)
+
