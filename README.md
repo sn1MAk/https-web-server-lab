@@ -226,3 +226,58 @@ https://localhost
 Але, як і було очікувано, браузер не довіряє цьому сертифікатові. Тому вилазить червона табличка та ~~https~~.
 
 ![https site](https://github.com/sn1MAk/https-web-server-lab/blob/d122f9004da584ce1076490e85470661eb36945c/screenshots/05-https-site.png)
+
+# 8.Перевірка мережевої доступності
+Для перевірки портів Nginx було використано:
+```bash
+sudo ss -tulpn | grep -E ':80|:443'
+```
+З`ясовано, що Nginx слухає:
+```bash
+0.0.0.0:80
+0.0.0.0:443
+```
+а також відповідні IPv6 адреси.
+
+# 9.Особливості мережі WSL2
+Оскільки Nginx працює в середині WSL2, Linux має власне ip, яке було встановлене за допомогою:
+```powershell
+ip addr
+```
+Після цього перевірено доступ до Nginx з Windows через ip-адрес WSL2:
+```powershell
+curl http://<WSL_IP>
+```
+Команда повернула код сторінки. Це означає, що Nginx та WSL працюють правильно.
+
+# 10.Налаштування доступу через Windows у локальній мережі 
+Для перенаправлення трафіку з Windows до WSL був використаний механізм `portproxy`.
+
+Команда для налаштування перенаправлення на HTTP:
+```powershell
+netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=80 connectaddress=<WSL_IP> connectport=80
+```
+Для HTTPS:
+```powershell
+netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=443 connectaddress=<WSL_IP> connectport=443
+```
+
+Після цього система доступу у локальній мережі стала такою:
+```text
+Клієнт
+   ↓
+Windows IP
+   ↓
+Windows portproxy
+   ↓
+WSL IP
+   ↓
+Nginx
+```
+
+Наявність перенаправлення була перевірена:
+```powershell
+netsh interface portproxy show all
+```
+
+![netsh port](https://github.com/sn1MAk/https-web-server-lab/blob/fdfb9e3e96d378869087b002844af9794523c098/screenshots/06-netsh-port.png)
