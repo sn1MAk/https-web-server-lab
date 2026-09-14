@@ -128,3 +128,55 @@ http://localhost
 У результаті веб-сторінка успішно відкрилася та успішно працювала через HTTP протокол та `80` порті *(стандартному для http)*.
 
 ![web site](https://github.com/sn1MAk/https-web-server-lab/blob/6926d93315307b962fef155586572f6d8e436d21/screenshots/03-web-site.png)
+
+# 4.Налаштування HTTPS
+
+## 4.1.Створення директорії для TSL-файлів
+
+Для зберігання ключа та сертифіката була створена директорія:
+```bash
+sudo mkdir -p /etc/nginx/ssl
+```
+
+## 4.2.Створення приватного ключа
+
+За допомогою OpenSSL було створено RSA-ключ довжиною 2048 біт.
+```bash
+sudo openssl genrsa -out /etc/nginx/ssl/server.key 2048
+```
+Командою створено ключ-файл `server.key`.
+
+## 4.3.Створення самопідписаного сертифіката
+
+Було створено X.509-сертифікат прив`язаний до приватного ключа:
+```bash
+sudo openssl req -new -x509 \
+-key /etc/nginx/ssl/server.key \
+-out /etc/nginx/ssl/server.crt \
+-days 30
+```
+
+Під час створення сертифіката було вказано:
+```bash
+Common Name: localhost
+```
+
+Термін дії сертифіката - 30 днів.
+
+# 5.Перевірка TSL-сертифіката
+
+Для перегляду сертифіката використана команда:
+```bash 
+openssl x509 -in /etc/nginx/ssl/server.crt -text
+```
+Команда дозволяє переглянути:
+- версію X.509;
+- серійний номер;
+- алгоритм підпису;
+- видавця;
+- термін дії;
+- Subject;
+- відкритий ключ;
+- розширення сертифіката;
+- цифровий підпис.
+![tsl crt](https://github.com/sn1MAk/https-web-server-lab/blob/9d99c1d1d8d742fbcf310185f8efa6b98b6746c8/screenshots/04-tsl-crt.png)
