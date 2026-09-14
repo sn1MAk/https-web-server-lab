@@ -180,3 +180,49 @@ openssl x509 -in /etc/nginx/ssl/server.crt -text
 - розширення сертифіката;
 - цифровий підпис.
 ![tsl crt](https://github.com/sn1MAk/https-web-server-lab/blob/9d99c1d1d8d742fbcf310185f8efa6b98b6746c8/screenshots/04-tsl-crt.png)
+
+## 5.1.Перевірка TSL-з`єднання
+
+Для перевірки TLS-з'єднання між клієнтом та Nginx було використано:
+
+```bash
+openssl s_client -connect localhost:443
+```
+Команда `s_client` виступає у ролі TLS-клієнта та встановлює TLS-з'єднання з сервером на порту `443`.
+
+# 6.Налаштування HTTPS у Nginx
+Було створено конфігураційний файл:
+```bash
+/etc/nginx/sites-available/https-lab
+```
+
+Конфіг знаходиться [за посиланням](https://github.com/sn1MAk/https-web-server-lab/blob/283d3f1c94972089f9a2296742776167b2249895/nginx/https-lab.conf) або `nginx/https-lab.conf`.
+
+## 6.1.Підключення конфігурації
+Конфігурація була підключена символічним посиланням:
+```bash
+sudo ln -s /etc/nginx/sites-available/https-lab /etc/nginx/sites-enabled/
+```
+Після цього конфігурацію було перевірено:
+```bash
+sudo nginx -t
+```
+Перевірка була успішна.
+
+Після цього конфігурацію Nginx було перезавантажено:
+```bash
+sudo systemctl reload nginx
+```
+> [!important]
+> При чому було використано `reload`, а не `restart`.
+> `restart` вимикає та запускає програму.
+> `reload` переглядає всі конфіги та перезапускається з новими налаштуваннями.
+
+# 7.Перевірка HTTPS
+Після налаштування HTTPS веб-сайт став доступним за посиланням:
+```bash
+https://localhost
+```
+Але, як і було очікувано, браузер не довіряє цьому сертифікатові. Тому вилазить червона табличка та ~~https~~.
+
+![https site](https://github.com/sn1MAk/https-web-server-lab/blob/d122f9004da584ce1076490e85470661eb36945c/screenshots/05-https-site.png)
